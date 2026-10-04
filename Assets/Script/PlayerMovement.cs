@@ -701,4 +701,51 @@ public void StopJump()
         " kết thúc JUMP"
     );
 }
+
+// =========================================================
+// HEAL
+// =========================================================
+
+    public bool Heal(int amount)
+    {
+        if (isDead)
+            return false;
+
+        // Đã đầy máu
+        if (currentHealth >= maxHealth)
+        {
+            return false;
+        }
+
+        int oldHealth = currentHealth;
+
+        currentHealth += amount;
+
+        // Không cho vượt quá Max HP
+        currentHealth = Mathf.Min(
+            currentHealth,
+            maxHealth
+        );
+
+        // Update Health Bar
+        if (healthBar != null)
+        {
+            healthBar.SetHealth(
+                currentHealth,
+                maxHealth
+            );
+        }
+
+        Debug.Log(
+            gameObject.name +
+            " hồi " +
+            (currentHealth - oldHealth) +
+            " HP. HP hiện tại: " +
+            currentHealth +
+            "/" +
+            maxHealth
+        );
+
+        return true;
+    }
 }

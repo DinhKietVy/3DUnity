@@ -7,6 +7,10 @@ public class Enemy : MonoBehaviour
     // HEALTH
     // =========================================================
 
+    [Header("Health Drop")]
+    [SerializeField] private GameObject healthPrefab;
+    [SerializeField] private Transform healthSpawnPoint;
+
     [Header("Health")]
     [SerializeField] private int maxHealth = 100;
 
@@ -1025,6 +1029,16 @@ public class Enemy : MonoBehaviour
 
         DisableSwordHitBox();
 
+        // =========================================
+        // SPAWN CỤC MÁU
+        // =========================================
+
+        SpawnHealth();
+
+        // =========================================
+        // TẮT ENEMY
+        // =========================================
+
         if (controller != null)
         {
             controller.enabled = false;
@@ -1226,5 +1240,38 @@ public class Enemy : MonoBehaviour
     public void StopJump()
     {
         
+    }
+
+    private void SpawnHealth()
+    {
+        if (healthPrefab == null)
+        {
+            Debug.LogWarning(
+                gameObject.name +
+                ": Chưa gán Health Prefab!"
+            );
+
+            return;
+        }
+
+        Vector3 spawnPosition =
+            healthSpawnPoint != null
+                ? healthSpawnPoint.position
+                : transform.position;
+
+        // Spawn Heart cao hơn 0.5 đơn vị
+        spawnPosition += Vector3.up * 0.5f;
+
+        Instantiate(
+            healthPrefab,
+            spawnPosition,
+            Quaternion.identity
+        );
+
+        Debug.Log(
+            gameObject.name +
+            " đã spawn Heart tại " +
+            spawnPosition
+        );
     }
 }
